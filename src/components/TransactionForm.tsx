@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
 import { uniqueID } from '../utils';
-import { Button, Menu } from "antd";
+import { Button, Menu, notification, Radio } from "antd";
 import 'antd/dist/antd.css';
 import '../index.css';
-import { useDispatch } from "react-redux";
-import { addTransaction } from '../store/actionCreators';
 import { Typography, Space } from 'antd';
+import '../style.css';
+import { connect } from "react-redux"
+import * as actionTypes from "../store/actionTypes"
 
 import { Checkbox, Row, Col } from 'antd';
-const dispatch = useDispatch();
 const { Text, Link } = Typography;
-function onChange(checkedValues) {
-}
 
-function TransactionForm({ onNewTransaction }) {
+function TransactionForm({ onNewTransaction, ledger, saveTransaction }) {
+
+
+    const [value, setValue] = React.useState(1);
     const [nameValue, setNameValue] = useState('');
     const [amountValue, setAmountValue] = useState('');
-    const handleTransaction = (type, evt) => {
+    const onChange = e => {
+        console.log('radio checked', e.target.value);
+        setValue(e.target.value);
+    };
+    const save = () => {
+        let transactionType = actionTypes.ADD_INCOME
+        if (value === 2) {
+            transactionType = actionTypes.ADD_EXPENSE
+        }
+        const data = {
+            id: uniqueID(), name: nameValue,
+            amount: parseInt(amountValue), type: transactionType
+        };
+        saveTransaction(data);
+        openNotification();
+    };
+    const addTransaction = (type, evt) => {
         evt.preventDefault();
         const data = {
             id: uniqueID(), name: nameValue,
@@ -27,41 +44,68 @@ function TransactionForm({ onNewTransaction }) {
         setNameValue('');
         setAmountValue('');
     }
-    const data = {
-        uniqueID,
-        nameValue,
-        amountValue,
+    const openNotification = () => {
+        notification.open({
+            message: 'Success',
+            onClick: () => {
+                console.log('Notification Clicked!');
+            },
+        });
     };
-    dispatch(addTransaction(data));
     return (
-        <div>
-            <h2>
-                Add New Transaction
-            </h2>
-            <form>
-                <label>
-                    Name
+        <div className="div-layout">
+            <div className="form-layout">
+                <h1>
+                    Add New Transaction
+                </h1>
+                <form>
                     <div>
-                        <input type="text" value={nameValue}
-                            onChange={(e) => setNameValue(e.target.value)} />
+                        <span> Name</span>
+                        <div className="marginBottom1">
+                            <input type="text" value={nameValue}
+                                onChange={(e) => setNameValue(e.target.value)} />
+                        </div>
                     </div>
-                </label>
-                <label>
-                    Amount (In Rupees)
                     <div>
-                        <input type="number" value={amountValue}
-                            onChange={(e) => setAmountValue(e.target.value)}
-                        />
+                        <span>Amount (In Rupees)</span>
+                        <div className="marginBottom1_5">
+                            <input type="number" value={amountValue}
+                                onChange={(e) => setAmountValue(e.target.value)}
+                            />
+                        </div>
                     </div>
-                </label>
-                <div>
-                    <Checkbox defaultChecked={false} onClick={(e) => handleTransaction('income', e)}>Add Income</Checkbox>;
-                    <Checkbox defaultChecked={false} onClick={(e) => handleTransaction('expense', e)}>Add Expense</Checkbox>;
-                    {/* <Button type="primary" onClick={(e)=>addTransaction('income',e)}>Add Income</Button>
-                    <Button onClick={(e)=>addTransaction('expense',e)}>Add Expense</Button> */}
-                </div>
-            </form>
+                    <div className="marginBottom1">
+
+                        <Radio.Group onChange={onChange} value={value}>
+                            <Radio value={1}>Add Income</Radio>
+                            <Radio value={2}>Add Expense</Radio>
+                        </Radio.Group>
+                    </div>
+                    <div>
+                        <Button type="primary" onClick={(e) => { save() }}>Save</Button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }
-export default TransactionForm;
+
+const mapStateToProps = state => {
+    return {
+        ledger: state.ledger,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        saveTransaction: (transactionData) => {
+            console.log("before calling dispatch", transactionData);
+            dispatch({
+                type: transactionData.type, ledgerEntry: transactionData
+            })
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionForm)

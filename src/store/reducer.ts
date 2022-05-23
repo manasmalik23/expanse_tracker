@@ -1,39 +1,21 @@
-import { ADD_TRANSACTION, DELETE_TRANSACTION } from "./actionTypes";
-const initialList = () => {
-    let localState = JSON.parse(localStorage.getItem('expenseTrackerState')!);
-    if (localState && localState.length > 0) {
-        return localState;
-    }
-};
+import * as actionTypes from "./actionTypes";
+
 const initialState = {
-    transactionList: initialList()
+    ledger: { income: 0, expense: 0 }
 };
-export const transactionReducer = (state = initialState, action) => {
+
+const reducer = (state = initialState, action) => {
+
+    console.log(action);
     switch (action.type) {
-        case ADD_TRANSACTION: {
-            localStorage.setItem(
-                "transaction-list",
-                JSON.stringify([...state.transactionList, action.data])
-            );
-            return {
-                ...state,
-                transactionList: [...state.transactionList, action.data],
-            };
-        }
-        case DELETE_TRANSACTION: {
-            const { data } = action;
-            const updatedList = state.transactionList.filter(
-                (item) => item.createdAt !== data.createdAt
-            );
-            localStorage.setItem("transaction-list", JSON.stringify(updatedList));
-            return {
-                ...state,
-                transactionList: updatedList,
-            };
-        }
-        default:
-            return {
-                ...state,
-            };
+        case actionTypes.ADD_INCOME:
+            state.ledger.income += action.ledgerEntry.amount
+            return state
+        case actionTypes.ADD_EXPENSE:
+            state.ledger.expense += action.ledgerEntry.amount
+            return state
     }
+    return state;
 };
+
+export default reducer;

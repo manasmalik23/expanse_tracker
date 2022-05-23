@@ -2,9 +2,10 @@ import React from 'react';
 import './App.css';
 import { Layout } from "antd";
 import { BrowserRouter, Link, Route, Navigate, Routes } from 'react-router-dom';
-import ExpenseTracker from './components/ExpenseTracker';
+// import ExpenseTracker from './components/ExpenseTracker';
 import Expense from './components/Expense';
 import AppHeader from './components/AppHeader';
+import ExpenseTracker from './components/ExpenseTracker';
 
 const { Content, Footer } = Layout;
 function App() {
@@ -14,16 +15,16 @@ function App() {
       <AppHeader />
       <Content
         className="site-layout"
-        style={{ padding: "0 250px", marginTop: 100 }}
+        style={{ marginTop: 100 }}
       >
         <Content>
         </Content>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/ExpenseTracker" element={<ExpenseTracker />} />
-            <Route path="/Expense" element={<Expense />} />
-          </Routes >
-        </BrowserRouter>
+        {/* <BrowserRouter> */}
+        <Routes>
+          <Route path="/ExpenseTracker" element={<ExpenseTracker />} />
+          <Route path="/Expense" element={<Expense />} />
+        </Routes >
+        {/* </BrowserRouter> */}
       </Content>
       <Footer style={{ textAlign: "center", marginTop: 350 }}>
         Expense Tracker

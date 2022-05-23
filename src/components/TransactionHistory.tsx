@@ -1,16 +1,16 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { useSelector } from "react-redux";
-import { Button } from 'antd';
+import { Button, Table, Tag } from 'antd';
 import React from 'react';
 import { Typography, Space } from 'antd';
+import { Header } from 'antd/lib/layout/layout';
+import Title from 'antd/lib/typography/Title';
 
 const { Text, Link } = Typography;
 
 function TransactionHistory({ transactions, onDeleteTransaction }) {
     return (
-        <div>
-
-            <h2>Transaction History</h2>
+        <div className="div-layout">
+            <Title>Transaction History</Title>
             <ul>
                 {
                     transactions.map((data) =>

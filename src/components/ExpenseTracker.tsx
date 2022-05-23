@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Expense from './Expense';
-import { useSelector } from "react-redux";
 import TransactionHistory from './TransactionHistory';
 import TransactionForm from './TransactionForm';
 import { Typography, Space } from 'antd';
@@ -13,7 +12,6 @@ function ExpenseTracker() {
     const [expense, setExpense] = useState(0);
     const [transactions, setTransactions] = useState(transactionData);
     const saveState = () => {
-        console.log(transactionData);
         localStorage.setItem('expenseTrackerState',
             JSON.stringify(transactions));
 
@@ -61,7 +59,6 @@ function ExpenseTracker() {
 
     return (
         <div>
-            <Expense />
             <TransactionHistory transactions={transactions}
                 onDeleteTransaction={handleDeleteTransaction} />
             <TransactionForm onNewTransaction={handleAddNewTransaction} />

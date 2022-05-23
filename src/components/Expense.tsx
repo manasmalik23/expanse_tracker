@@ -1,39 +1,53 @@
 import React from 'react';
-let transactions = JSON.parse(localStorage.getItem('expenseTrackerState')!);
-const calculateExpenses = (): { income: number, expense: number } => {
-    var localIncome = 0, localExpense = 0;
-    if (transactions) {
-        transactions.forEach((data) => {
-            if (data['type'] === 'income') {
-                localIncome += data['amount'];
-            }
-            else if (data['type'] === 'expense') {
-                localExpense += data['amount'];
-            }
-        }
-        );
-    }
-    return { income: localIncome, expense: localExpense }
-}
+import { Pie } from '@ant-design/plots';
+import { connect } from 'react-redux';
 
-function Expense() {
+let transactions = JSON.parse(localStorage.getItem('expenseTrackerState')!);
+
+function Expense(ledger) {
+    const DemoPie = () => {
+        const data = [
+            {
+                type: 'income',
+                value: ledger.income,
+            },
+            {
+                type: 'expense',
+                value: ledger.expense,
+            },
+        ];
+        const config = {
+            appendPadding: 10,
+            data,
+            angleField: 'value',
+            colorField: 'type',
+            radius: 0.5,
+            interactions: [
+                {
+                    type: 'element-active',
+                },
+            ],
+        };
+        return <Pie {...config} />;
+    };
+    console.log(ledger)
+    ledger = ledger.ledger
     return (
-        <div>
-            <div>
-                <h2> Your Balance</h2>
-                <div>Rs{calculateExpenses().income - calculateExpenses().expense}</div>
-            </div>
-            <div>
-                <div>
-                    <h2>Income</h2>
-                    <div>Rs{calculateExpenses().income}</div>
-                </div>
-                <div>
-                    <h2>Expense</h2>
-                    <div>Rs{calculateExpenses().expense}</div>
-                </div>
-            </div>
+        <div className="form-layout1">
+            <h2> Your Balance</h2>
+            <div className="marginBottom1"><span>Rs{ledger.income - ledger.expense}</span></div>
+            <h2>Income</h2>
+            <div className="marginBottom1"><span>Rs{ledger.income}</span></div>
+            <h2>Expense</h2>
+            <div className="marginBottom1">Rs{ledger.expense}</div>
+            <DemoPie />
         </div>
     )
 }
-export default Expense;
+
+const mapStateToProps = state => {
+    return {
+        ledger: state.ledger,
+    }
+}
+export default connect(mapStateToProps)(Expense);
