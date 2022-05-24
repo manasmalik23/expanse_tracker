@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { uniqueID } from '../utils';
-import { Button, Menu, notification, Radio } from "antd";
+import { Button, Form, Input, Menu, message, notification, Radio } from "antd";
 import 'antd/dist/antd.css';
 import '../index.css';
 import { Typography, Space } from 'antd';
@@ -9,14 +9,17 @@ import { connect } from "react-redux"
 import * as actionTypes from "../store/actionTypes"
 
 import { Checkbox, Row, Col } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
 const { Text, Link } = Typography;
+const onClick = ({ key }) => {
+    message.info(`Click on item ${key}`);
+};
 
-function TransactionForm({ onNewTransaction, ledger, saveTransaction }) {
-
-
+function TransactionForm({ ledger, saveTransaction }) {
     const [value, setValue] = React.useState(1);
     const [nameValue, setNameValue] = useState('');
     const [amountValue, setAmountValue] = useState('');
+    const [itemValue, setItemValue] = useState('');
     const onChange = e => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
@@ -28,22 +31,22 @@ function TransactionForm({ onNewTransaction, ledger, saveTransaction }) {
         }
         const data = {
             id: uniqueID(), name: nameValue,
-            amount: parseInt(amountValue), type: transactionType
+            amount: parseInt(amountValue), item: itemValue, type: transactionType
         };
         saveTransaction(data);
         openNotification();
     };
-    const addTransaction = (type, evt) => {
-        evt.preventDefault();
-        const data = {
-            id: uniqueID(), name: nameValue,
-            amount: parseInt(amountValue), type: type
-        };
+    // const addTransaction = (type, evt) => {
+    //     evt.preventDefault();
+    //     const data = {
+    //         id: uniqueID(), name: nameValue,
+    //         amount: parseInt(amountValue), type: type
+    //     };
 
-        onNewTransaction(data);
-        setNameValue('');
-        setAmountValue('');
-    }
+    //     onNewTransaction(data);
+    //     setNameValue('');
+    //     setAmountValue('');
+    // }
     const openNotification = () => {
         notification.open({
             message: 'Success',
@@ -54,11 +57,77 @@ function TransactionForm({ onNewTransaction, ledger, saveTransaction }) {
     };
     return (
         <div className="div-layout">
-            <div className="form-layout">
-                <h1>
-                    Add New Transaction
-                </h1>
+            <Form
+                name="basic"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                autoComplete="off"
+            >
+                <Form.Item
+                    label="Name"
+                    name="Name"
+                    rules={[{ required: true, message: 'Add the type' }]}
+                >
+                    <Input type="text" value={nameValue}
+                        onChange={(e) => setNameValue(e.target.value)} />
+                </Form.Item>
+
+                <Form.Item
+                    label="Amount"
+                    name="Amount"
+                    rules={[{ required: true, message: 'Enter the amount' }]}
+                >
+                    <Input type="number" value={amountValue}
+                        onChange={(e) => setAmountValue(e.target.value)}
+                    />
+                </Form.Item>
+                <Form.Item>
+                    <Menu
+                        onClick={onClick}
+                        items={[
+                            {
+                                label: 'Food',
+                                key: '1',
+                            },
+                            {
+                                label: 'Education',
+                                key: '2',
+                            },
+                            {
+                                label: 'Entertainment',
+                                key: '3',
+                            },
+                            {
+                                label: 'Bills',
+                                key: '4',
+                            },
+                            {
+                                label: 'Travel',
+                                key: '5',
+                            },
+                        ]}
+                    />
+                </Form.Item>
+                <div className="marginBottom1">
+
+                    <Radio.Group onChange={onChange} value={value}>
+                        <Radio value={1}>Add Income</Radio>
+                        <Radio value={2}>Add Expense</Radio>
+                    </Radio.Group>
+                </div>
+
+                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Button type="primary" htmlType="submit" onClick={(e) => { save() }}>
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+
+            {/* <div className="form-layout">
                 <form>
+                    <h1>
+                        Add New Transaction
+                    </h1>
                     <div>
                         <span> Name</span>
                         <div className="marginBottom1">
@@ -85,8 +154,9 @@ function TransactionForm({ onNewTransaction, ledger, saveTransaction }) {
                         <Button type="primary" onClick={(e) => { save() }}>Save</Button>
                     </div>
                 </form>
-            </div>
-        </div>
+            </div> */}
+
+        </div >
     )
 }
 

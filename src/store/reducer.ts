@@ -1,6 +1,6 @@
 import * as actionTypes from "./actionTypes";
 
-const initialState = {
+const initialState: any = {
     ledger: { income: 0, expense: 0 }
 };
 

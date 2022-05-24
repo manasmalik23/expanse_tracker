@@ -9,6 +9,14 @@
     align-items: center;
 }
 
+.div-layout1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+
 .marginBottom1 {
     margin-bottom: 1em;
     font-style: oblique;

@@ -2,10 +2,9 @@ import React from 'react';
 import './App.css';
 import { Layout } from "antd";
 import { BrowserRouter, Link, Route, Navigate, Routes } from 'react-router-dom';
-// import ExpenseTracker from './components/ExpenseTracker';
+import ExpenseTracker from './components/ExpenseTracker';
 import Expense from './components/Expense';
 import AppHeader from './components/AppHeader';
-import ExpenseTracker from './components/ExpenseTracker';
 
 const { Content, Footer } = Layout;
 function App() {

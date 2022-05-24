@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Expense from './Expense';
 import TransactionHistory from './TransactionHistory';
 import TransactionForm from './TransactionForm';
-import { Typography, Space } from 'antd';
+import { Typography, Space, Button, Modal } from 'antd';
 import { uniqueID } from '../utils';
 //Container component
 const transactionData = [];
@@ -57,11 +57,33 @@ function ExpenseTracker() {
         calculateExpenses();
     }, [transactions]);
 
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
     return (
         <div>
+            <div className='marginBottom1'>
+                <Button size='large' type="primary" onClick={showModal}>
+                    ADD +
+                </Button>
+            </div>
+            <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <TransactionForm />
+            </Modal>
             <TransactionHistory transactions={transactions}
                 onDeleteTransaction={handleDeleteTransaction} />
-            <TransactionForm onNewTransaction={handleAddNewTransaction} />
+
         </div>
 
     )
