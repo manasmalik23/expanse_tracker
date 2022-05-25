@@ -8,11 +8,6 @@ import reducer from './store/reducer';
 import { createStore, applyMiddleware, compose } from "redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
-// import SagaMiddleware from 'redux-saga';
-// // const Test = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose;
-// // const sagaCreator = SagaMiddleware();
-
-// const store = createStore(reducer, Test(applyMiddleware(thunk)));
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware()))

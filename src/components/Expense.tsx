@@ -17,6 +17,7 @@ function Expense(ledger) {
                 type: 'expense',
                 value: ledger.expense,
             },
+
         ];
         const config = {
             appendPadding: 10,

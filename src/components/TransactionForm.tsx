@@ -5,12 +5,13 @@ import 'antd/dist/antd.css';
 import '../index.css';
 import { Typography, Space } from 'antd';
 import '../style.css';
-import { connect } from "react-redux"
+import { connect, useDispatch } from "react-redux"
 import * as actionTypes from "../store/actionTypes"
 
 import { Checkbox, Row, Col } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 const { Text, Link } = Typography;
+
 const onClick = ({ key }) => {
     message.info(`Click on item ${key}`);
 };
@@ -19,7 +20,6 @@ function TransactionForm({ ledger, saveTransaction }) {
     const [value, setValue] = React.useState(1);
     const [nameValue, setNameValue] = useState('');
     const [amountValue, setAmountValue] = useState('');
-    const [itemValue, setItemValue] = useState('');
     const onChange = e => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
@@ -31,22 +31,11 @@ function TransactionForm({ ledger, saveTransaction }) {
         }
         const data = {
             id: uniqueID(), name: nameValue,
-            amount: parseInt(amountValue), item: itemValue, type: transactionType
+            amount: parseInt(amountValue), type: transactionType
         };
         saveTransaction(data);
         openNotification();
     };
-    // const addTransaction = (type, evt) => {
-    //     evt.preventDefault();
-    //     const data = {
-    //         id: uniqueID(), name: nameValue,
-    //         amount: parseInt(amountValue), type: type
-    //     };
-
-    //     onNewTransaction(data);
-    //     setNameValue('');
-    //     setAmountValue('');
-    // }
     const openNotification = () => {
         notification.open({
             message: 'Success',
@@ -122,40 +111,6 @@ function TransactionForm({ ledger, saveTransaction }) {
                     </Button>
                 </Form.Item>
             </Form>
-
-            {/* <div className="form-layout">
-                <form>
-                    <h1>
-                        Add New Transaction
-                    </h1>
-                    <div>
-                        <span> Name</span>
-                        <div className="marginBottom1">
-                            <input type="text" value={nameValue}
-                                onChange={(e) => setNameValue(e.target.value)} />
-                        </div>
-                    </div>
-                    <div>
-                        <span>Amount (In Rupees)</span>
-                        <div className="marginBottom1_5">
-                            <input type="number" value={amountValue}
-                                onChange={(e) => setAmountValue(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="marginBottom1">
-
-                        <Radio.Group onChange={onChange} value={value}>
-                            <Radio value={1}>Add Income</Radio>
-                            <Radio value={2}>Add Expense</Radio>
-                        </Radio.Group>
-                    </div>
-                    <div>
-                        <Button type="primary" onClick={(e) => { save() }}>Save</Button>
-                    </div>
-                </form>
-            </div> */}
-
         </div >
     )
 }
