@@ -27,3 +27,4 @@ const reducer = (state = initialState, action) => {
 };
 
 export default reducer;
+// state.ledger.filter((action) => action.ledgerEntry.id['id'] !== state.ledger.id);

@@ -45,21 +45,11 @@ function Expense(ledger) {
                     <Statistic title="Income (INR)" value={ledger.income} precision={2} />
                 </Col>
                 <Col span={12}>
-                    <Statistic title="Expense (INR)" value={ledger.expense} />
+                    <Statistic title="Expense (INR)" value={ledger.ecaxpense} />
                 </Col>
             </Row>
             <DemoPie />
         </div>
-        // // <div className="form-layout1">
-        // //     <h2> Your Balance</h2>
-        // //     <div className="marginBottom1"><span>Rs{ledger.income - ledger.expense}</span></div>
-        // //     <h2>Income</h2>
-        // //     <div className="marginBottom1"><span>Rs{ledger.income}</span></div>
-        // //     <h2>Expense</h2>
-        // //     <div className="marginBottom1">Rs{ledger.expense}</div>
-        //     <DemoPie />
-        // </div>
-
     )
 }
 
